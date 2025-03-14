@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fakebook - Log in or Sign up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="flex flex-col md:flex-row max-w-4xl w-full items-center">
+        <div class="md:flex-1 p-6 text-center md:text-left">
+            <h1 class="text-4xl md:text-5xl text-blue-600 font-bold">Fakebook</h1>
+            <p class="text-lg md:text-xl text-gray-700 mt-4">Connect with friends and the world around you on Fakebook.
+            </p>
+        </div>
+        <div class="md:flex-1 flex items-center justify-center w-full">
+            <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-sm text-center">
+                <input type="text" placeholder="Email or Phone Number"
+                    class="w-full p-3 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="password" placeholder="Password"
+                    class="w-full p-3 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button
+                    class="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-semibold hover:bg-blue-700">Log
+                    In</button>
+                <a href="#" class="block mt-3 text-blue-600 text-sm hover:underline">Forgot password?</a>
+                <hr class="my-4">
+                <button
+                    class="w-full bg-green-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-green-600">Create
+                    New Account</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fakebook - Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/validate.js"></script>
+  </head>
+
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="flex flex-col md:flex-row max-w-4xl w-full items-center">
+      <div class="md:flex-1 p-6 text-center md:text-left">
+        <h1 class="text-4xl md:text-5xl text-blue-600 font-bold">Fakebook</h1>
+        <p class="text-lg md:text-xl text-gray-700 mt-4">
+          Join Fakebook and connect with the world.
+        </p>
+      </div>
+      <div class="md:flex-1 flex items-center justify-center w-full">
+        <div
+          class="bg-white p-6 rounded-lg shadow-md w-full max-w-sm text-center"
+        >
+          <h2 class="text-2xl font-bold mb-4">Create an Account</h2>
+          <form hx-post="/login" hx-ext="validate">
+            <!-- First Name -->
+            <input
+              type="text"
+              name="first_name"
+              placeholder="First Name"
+              required
+              hx-validate="required"
+              class="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <small class="text-red-500 hidden" id="first-name-error"
+              >First name is required.</small
+            >
+
+            <!-- Last Name -->
+            <input
+              type="text"
+              name="last_name"
+              placeholder="Last Name"
+              required
+              hx-validate="required"
+              class="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <small class="text-red-500 hidden" id="last-name-error"
+              >Last name is required.</small
+            >
+
+            <!-- Email -->
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+              hx-validate="required,email"
+              class="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <small class="text-red-500 hidden" id="email-error"
+              >Invalid email format.</small
+            >
+
+            <!-- Password -->
+            <div class="relative w-full mb-2">
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Password"
+                required
+                hx-validate="required,min:6"
+                class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <small class="text-red-500 hidden" id="password-error"
+                >Password must be at least 6 characters.</small
+              >
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="relative w-full mb-2">
+              <input
+                type="password"
+                name="confirm_password"
+                id="confirm_password"
+                placeholder="Confirm Password"
+                required
+                hx-validate="required,match:#password"
+                class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <small class="text-red-500 hidden" id="confirm-password-error"
+                >Passwords do not match.</small
+              >
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="w-full bg-green-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-green-600"
+            >
+              Sign Up
+            </button>
+          </form>
+
+          <p class="mt-4 text-gray-600">
+            Already have an account?
+            <a href="/login" class="text-blue-600 hover:underline">Log in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
