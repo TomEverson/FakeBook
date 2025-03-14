@@ -1,0 +1,164 @@
+/* General Styles */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
+body {
+    background-color: #f3f4f6;
+    font-family: 'Ubuntu', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+        max-width: 900px;
+    }
+}
+
+/* Left Section */
+.left-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.left-section h1 {
+    font-size: 40px;
+    color: #1877f2;
+    font-weight: bold;
+}
+
+.left-section p {
+    font-size: 18px;
+    color: #555;
+}
+
+@media (min-width: 768px) {
+    .left-section {
+        text-align: left;
+        flex: 1;
+        padding: 20px;
+    }
+}
+
+/* Right Section */
+.right-section {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+}
+
+/* Login Box */
+.login-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+}
+
+/* Input Fields */
+.input-field {
+    width: 92%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #1877f2;
+    box-shadow: 0 0 5px rgba(24, 119, 242, 0.5);
+}
+
+/* Buttons */
+.login-button,
+.create-account-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-button {
+    background-color: #1877f2;
+    color: white;
+    margin-top: 10px;
+}
+
+.login-button:hover {
+    background-color: #165db5;
+}
+
+.create-account-button {
+    background-color: #42b72a;
+    color: white;
+    margin-top: 10px;
+}
+
+.create-account-button:hover {
+    background-color: #36a420;
+}
+
+/* Forgot Password */
+.forgot-password {
+    display: block;
+    color: #1877f2;
+    font-size: 14px;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Horizontal Line */
+hr {
+    margin: 15px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+/* Password Field with Toggle */
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container .input-field {
+    width: 84%;
+    padding-right: 40px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 42%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
