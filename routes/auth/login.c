@@ -1,5 +1,4 @@
-#include <iostream>
-#include <string>
+#include <string.h>
 #include <sys/socket.h>
 #include "../../utils/utils.h"
 
@@ -15,8 +14,6 @@ void login_router(struct Request *request)
     }
     else if (strcmp(request->method, "POST") == 0)
     {
-
-        std::cout << request->body << std::endl;
 
         send(request->client_fd, HTTP_OK_STATUS, strlen(HTTP_OK_STATUS), 0);
     }

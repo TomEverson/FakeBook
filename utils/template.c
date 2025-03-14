@@ -1,14 +1,15 @@
 #include "utils.h"
-#include <iostream>
-#include <string>
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 char *read_file(const char *input_file)
 {
     char base_folder[1024];
     if (!getcwd(base_folder, sizeof(base_folder)))
     {
-        std::cerr << "Error: Can't get the current working directory" << std::endl;
+        fprintf(stderr, "Error: Can't get the current working directory\n");
         return NULL;
     }
 
@@ -18,7 +19,7 @@ char *read_file(const char *input_file)
     FILE *file = fopen(full_path, "r");
     if (!file)
     {
-        std::cerr << "Error: Cannot open template file" << std::endl;
+        perror("Error: Cannot open template file");
         return NULL;
     }
 

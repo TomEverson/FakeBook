@@ -6,7 +6,6 @@
     <title>Fakebook - Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
-    <script src="https://unpkg.com/htmx.org/dist/ext/validate.js"></script>
   </head>
 
   <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
@@ -22,14 +21,13 @@
           class="bg-white p-6 rounded-lg shadow-md w-full max-w-sm text-center"
         >
           <h2 class="text-2xl font-bold mb-4">Create an Account</h2>
-          <form hx-post="/login" hx-ext="validate">
+          <form hx-post="/register">
             <!-- First Name -->
             <input
               type="text"
               name="first_name"
               placeholder="First Name"
               required
-              hx-validate="required"
               class="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <small class="text-red-500 hidden" id="first-name-error"
@@ -42,7 +40,6 @@
               name="last_name"
               placeholder="Last Name"
               required
-              hx-validate="required"
               class="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <small class="text-red-500 hidden" id="last-name-error"
@@ -55,7 +52,6 @@
               name="email"
               placeholder="Email"
               required
-              hx-validate="required,email"
               class="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <small class="text-red-500 hidden" id="email-error"
@@ -70,7 +66,6 @@
                 id="password"
                 placeholder="Password"
                 required
-                hx-validate="required,min:6"
                 class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <small class="text-red-500 hidden" id="password-error"
@@ -86,7 +81,6 @@
                 id="confirm_password"
                 placeholder="Confirm Password"
                 required
-                hx-validate="required,match:#password"
                 class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <small class="text-red-500 hidden" id="confirm-password-error"

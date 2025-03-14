@@ -1,8 +1,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <iostream>
 #include <unistd.h>
-#include <cstring>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "utils/utils.h"
 #include "routes/routes.h"
@@ -20,7 +21,7 @@ int main()
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd == -1)
     {
-        std::cerr << "Socket creation failed!\n";
+        perror("Socket creation failed");
         return 1;
     }
 
@@ -28,21 +29,20 @@ int main()
     int reuse = 1;
     if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0)
     {
-        std::cerr << "SO_REUSEADDR failed!\n";
+        perror("SO_REUSEADDR failed");
         return 1;
     }
 
     // Server address structure
-    struct sockaddr_in serv_addr = {
-        .sin_family = AF_INET,
-        .sin_port = htons(PORT),
-        .sin_addr = {htonl(INADDR_ANY)},
-    };
+    struct sockaddr_in serv_addr;
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
+    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     // Bind socket
     if (bind(server_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
-        std::cerr << "Bind failed!\n";
+        perror("Bind failed");
         return 1;
     }
 
@@ -50,35 +50,35 @@ int main()
     int connection_backlog = 10;
     if (listen(server_fd, connection_backlog) != 0)
     {
-        std::cerr << "Listen failed!\n";
+        perror("Listen failed");
         return 1;
     }
 
-    std::cout << "Server is listening on port " << PORT << "...\n";
+    printf("Server is listening on port %d...\n", PORT);
 
     // **Main server loop**
-    while (true)
+    while (1)
     {
         client_addr_len = sizeof(client_addr);
         int client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
         if (client_fd == -1)
         {
-            std::cerr << "Failed to accept client!\n";
+            perror("Failed to accept client");
             continue; // Keep the server running
         }
 
-        std::cout << "Client connected!\n";
+        printf("Client connected!\n");
 
         char buffer[BUFFER_SIZE] = {0};
         ssize_t byte_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0);
         if (byte_received <= 0)
         {
-            std::cerr << "Error reading request or client disconnected.\n";
+            perror("Error reading request or client disconnected");
             close(client_fd);
             continue;
         }
 
-        Request request = parse_request(buffer, &client_fd);
+        struct Request request = parse_request(buffer, &client_fd);
 
         if (strcmp(request.url[0], "/") == 0)
         {
