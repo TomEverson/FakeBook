@@ -22,6 +22,15 @@ struct Request parse_request(char buffer[], int *client_fd)
     strncpy(req.protocol, protocol, sizeof(req.protocol) - 1);
     req.protocol[sizeof(req.protocol) - 1] = '\0';
 
+    // Decode URL before processing
+    char *decoded_url = url_decode(url_raw); // Decode URL
+    if (decoded_url)
+    {
+        strncpy(url_raw, decoded_url, sizeof(url_raw) - 1);
+        url_raw[sizeof(url_raw) - 1] = '\0';
+        free(decoded_url); // Free memory after decoding
+    }
+
     // Process URL into parts
     if (strcmp(url_raw, "/") == 0) // If root URL
     {
@@ -46,8 +55,18 @@ struct Request parse_request(char buffer[], int *client_fd)
     if (body_start != NULL)
     {
         body_start += 4;
-        strncpy(req.body, body_start, sizeof(req.body) - 1);
-        req.body[sizeof(req.body) - 1] = '\0';
+        char *decoded_body = url_decode(body_start); // Decode body
+        if (decoded_body)
+        {
+            strncpy(req.body, decoded_body, sizeof(req.body) - 1);
+            req.body[sizeof(req.body) - 1] = '\0';
+            free(decoded_body); // Free memory after decoding
+        }
+        else
+        {
+            strncpy(req.body, body_start, sizeof(req.body) - 1);
+            req.body[sizeof(req.body) - 1] = '\0';
+        }
     }
     else
     {
@@ -59,36 +78,44 @@ struct Request parse_request(char buffer[], int *client_fd)
 
 char *url_decode(const char *src)
 {
+    if (!src)
+        return NULL;
+
     size_t len = strlen(src);
-    char *decoded = (char *)malloc(len + 1); // Allocate memory dynamically
+    char *decoded = (char *)malloc(len + 1); // Allocate enough space
     if (!decoded)
     {
         fprintf(stderr, "Memory allocation failed\n");
         return NULL;
     }
 
-    char a, b;
     size_t j = 0;
     for (size_t i = 0; i < len; i++)
     {
-        if (src[i] == '%' && i + 2 < len && isxdigit(src[i + 1]) && isxdigit(src[i + 2]))
+        if (src[i] == '%' && i + 2 < len && isxdigit((unsigned char)src[i + 1]) && isxdigit((unsigned char)src[i + 2]))
         {
-            a = src[i + 1];
-            b = src[i + 2];
-            char hex_str[3] = {a, b, '\0'};
+            char hex_str[3] = {src[i + 1], src[i + 2], '\0'};
             decoded[j++] = (char)strtol(hex_str, NULL, 16);
-            i += 2;
+            i += 2; // Skip the next two hex characters
         }
         else if (src[i] == '+')
         {
-            decoded[j++] = ' ';
+            decoded[j++] = ' '; // Convert '+' to space
         }
         else
         {
             decoded[j++] = src[i];
         }
+
+        // Ensure we don't overflow the buffer
+        if (j >= len)
+        {
+            fprintf(stderr, "Decoding error: buffer overflow detected\n");
+            free(decoded);
+            return NULL;
+        }
     }
 
-    decoded[j] = '\0';
-    return decoded; // Caller must free this memory
+    decoded[j] = '\0'; // Null-terminate
+    return decoded;
 }

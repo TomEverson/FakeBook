@@ -1,37 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fakebook - Log in or Sign up</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+  </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-    <div class="flex flex-col md:flex-row max-w-4xl w-full items-center">
-        <div class="md:flex-1 p-6 text-center md:text-left">
-            <h1 class="text-4xl md:text-5xl text-blue-600 font-bold">Fakebook</h1>
-            <p class="text-lg md:text-xl text-gray-700 mt-4">Connect with friends and the world around you on Fakebook.
-            </p>
+  <body>
+    <div class="container">
+      <div class="left-section">
+        <h1>Fakebook</h1>
+        <p>Connect with friends and the world around you on Fakebook.</p>
+      </div>
+      <div class="right-section">
+        <div class="login-box">
+          <input type="text" placeholder="Email " class="input-field" />
+
+          <div class="password-container">
+            <input
+              type="password"
+              placeholder="Password"
+              id="password"
+              class="input-field"
+            />
+          </div>
+
+          <button class="login-button">Log In</button>
+          <a href="#" class="forgot-password">Forgot password?</a>
+          <hr />
+          <button class="create-account-button">Create New Account</button>
         </div>
-        <div class="md:flex-1 flex items-center justify-center w-full">
-            <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-sm text-center">
-                <input type="text" placeholder="Email or Phone Number"
-                    class="w-full p-3 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input type="password" placeholder="Password"
-                    class="w-full p-3 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button
-                    class="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-semibold hover:bg-blue-700">Log
-                    In</button>
-                <a href="#" class="block mt-3 text-blue-600 text-sm hover:underline">Forgot password?</a>
-                <hr class="my-4">
-                <button
-                    class="w-full bg-green-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-green-600">Create
-                    New Account</button>
-            </div>
-        </div>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>
+
+<style>
+  /* General Styles */
+  @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+
+  body {
+    background-color: #f3f4f6;
+    font-family: "Ubuntu", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+  }
+
+  /* Container */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      flex-direction: row;
+      max-width: 900px;
+    }
+  }
+
+  /* Left Section */
+  .left-section {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .left-section h1 {
+    font-size: 40px;
+    color: #1877f2;
+    font-weight: bold;
+  }
+
+  .left-section p {
+    font-size: 18px;
+    color: #555;
+  }
+
+  @media (min-width: 768px) {
+    .left-section {
+      text-align: left;
+      flex: 1;
+      padding: 20px;
+    }
+  }
+
+  /* Right Section */
+  .right-section {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+  }
+
+  /* Login Box */
+  .login-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+  }
+
+  /* Input Fields */
+  .input-field {
+    width: 92%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .input-field:focus {
+    outline: none;
+    border-color: #1877f2;
+    box-shadow: 0 0 5px rgba(24, 119, 242, 0.5);
+  }
+
+  /* Buttons */
+  .login-button,
+  .create-account-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .login-button {
+    background-color: #1877f2;
+    color: white;
+    margin-top: 10px;
+  }
+
+  .login-button:hover {
+    background-color: #165db5;
+  }
+
+  .create-account-button {
+    background-color: #42b72a;
+    color: white;
+    margin-top: 10px;
+  }
+
+  .create-account-button:hover {
+    background-color: #36a420;
+  }
+
+  /* Forgot Password */
+  .forgot-password {
+    display: block;
+    color: #1877f2;
+    font-size: 14px;
+    margin-top: 10px;
+    text-decoration: none;
+  }
+
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+
+  /* Horizontal Line */
+  hr {
+    margin: 15px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+  }
+
+  /* Password Field with Toggle */
+  .password-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .password-container .input-field {
+    width: 92%; /* Match the width of other input fields */
+    padding-right: 40px; /* Space for the eye button */
+  }
+
+  .toggle-password {
+    position: absolute;
+    top: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+</style>

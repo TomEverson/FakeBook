@@ -4,12 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sqlite3.h>
 
 #include "utils/utils.h"
 #include "routes/routes.h"
+#include "db/db.h"
 
 #define PORT 4221
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 4096
 
 int main()
 {
@@ -55,6 +57,21 @@ int main()
     }
 
     printf("Server is listening on port %d...\n", PORT);
+
+    sqlite3 *db = open_database();
+
+    if (db == NULL)
+    {
+        perror("Database Connection Error");
+        return 1;
+    }
+
+    int rc = setup_database();
+
+    if (rc == 1)
+    {
+        return 1;
+    }
 
     // **Main server loop**
     while (1)
@@ -106,6 +123,7 @@ int main()
         close(client_fd);
     }
 
+    close_database();
     close(server_fd);
     return 0;
 }
