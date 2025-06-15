@@ -6,8 +6,14 @@
     <title>Fakebook - Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script>
+      // Add HTMX event listener to debug the issue
+      document.addEventListener("htmx:responseError", (event) => {
+        document.getElementById("error-container").innerHTML =
+          event.detail.xhr.response;
+      });
+    </script>
   </head>
-
   <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="flex flex-col md:flex-row max-w-4xl w-full items-center">
       <div class="md:flex-1 p-6 text-center md:text-left">
@@ -21,8 +27,14 @@
           class="bg-white p-6 rounded-lg shadow-md w-full max-w-sm text-center"
         >
           <h2 class="text-2xl font-bold mb-4">Create an Account</h2>
-          <form hx-post="/register">
-            <!-- First Name -->
+
+          <form
+            id="signup-form"
+            hx-post="/register"
+            hx-target="#error-container"
+          >
+            <div id="error-container" class="mb-2 text-red-500"></div>
+
             <input
               type="text"
               name="first_name"
@@ -30,11 +42,7 @@
               required
               class="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <small class="text-red-500 hidden" id="first-name-error"
-              >First name is required.</small
-            >
 
-            <!-- Last Name -->
             <input
               type="text"
               name="last_name"
@@ -42,11 +50,7 @@
               required
               class="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <small class="text-red-500 hidden" id="last-name-error"
-              >Last name is required.</small
-            >
 
-            <!-- Email -->
             <input
               type="email"
               name="email"
@@ -54,11 +58,7 @@
               required
               class="w-full p-3 mb-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <small class="text-red-500 hidden" id="email-error"
-              >Invalid email format.</small
-            >
 
-            <!-- Password -->
             <div class="relative w-full mb-2">
               <input
                 type="password"
@@ -68,12 +68,8 @@
                 required
                 class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <small class="text-red-500 hidden" id="password-error"
-                >Password must be at least 6 characters.</small
-              >
             </div>
 
-            <!-- Confirm Password -->
             <div class="relative w-full mb-2">
               <input
                 type="password"
@@ -83,12 +79,8 @@
                 required
                 class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <small class="text-red-500 hidden" id="confirm-password-error"
-                >Passwords do not match.</small
-              >
             </div>
 
-            <!-- Submit Button -->
             <button
               type="submit"
               class="w-full bg-green-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-green-600"

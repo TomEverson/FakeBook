@@ -18,7 +18,7 @@ typedef struct
     char confirm_password[32];
 } RequestBody;
 
-FieldInfo request_body_fields[] = {
+FieldInfo register_request_body_fields[] = {
     {"first_name", offsetof(RequestBody, first_name), 's', sizeof(((RequestBody *)0)->first_name)},
     {"last_name", offsetof(RequestBody, last_name), 's', sizeof(((RequestBody *)0)->last_name)},
     {"email", offsetof(RequestBody, email), 's', sizeof(((RequestBody *)0)->email)},
@@ -26,11 +26,10 @@ FieldInfo request_body_fields[] = {
     {"confirm_password", offsetof(RequestBody, confirm_password), 's', sizeof(((RequestBody *)0)->confirm_password)},
 };
 
-const int field_count = sizeof(request_body_fields) / sizeof(FieldInfo);
+const int register_field_count = sizeof(register_request_body_fields) / sizeof(FieldInfo);
 
 void register_router(struct Request *request)
 {
-
     if (strcmp(request->method, "GET") == 0)
     {
         const char *file_template = read_file("/template/auth/register.html");
@@ -43,12 +42,53 @@ void register_router(struct Request *request)
     {
         RequestBody request_body = {0};
 
-        parse_body(request->body, &request_body, request_body_fields, field_count);
+        // Parse the body
+        parse_body(request->body, &request_body, register_request_body_fields, register_field_count);
+
+        // Check First Name
+        if (strlen(request_body.first_name) < 3)
+        {
+            const char *error_message = "<div class='text-red-500'>First Name is Too Short!</div>";
+            char response[1024];
+            snprintf(response, sizeof(response), HTTP_BAD_REQUEST_STATUS,
+                     strlen(error_message), error_message);
+            send(request->client_fd, response, strlen(response), 0);
+            close(request->client_fd);
+            return;
+        }
+
+        // Check Last Name
+        if (strlen(request_body.last_name) < 3)
+        {
+            const char *error_message = "<div class='text-red-500'>Last Name is Too Short!</div>";
+            char response[1024];
+            snprintf(response, sizeof(response), HTTP_BAD_REQUEST_STATUS,
+                     strlen(error_message), error_message);
+            send(request->client_fd, response, strlen(response), 0);
+            close(request->client_fd);
+            return;
+        }
+
+        // Check If the Email is Valid Or Not
+        if (is_invalid_email(request_body.email) == 1)
+        {
+            const char *error_message = "<div class='text-red-500'>Invalid Email!</div>";
+            char response[1024];
+            snprintf(response, sizeof(response), HTTP_BAD_REQUEST_STATUS,
+                     strlen(error_message), error_message);
+            send(request->client_fd, response, strlen(response), 0);
+            close(request->client_fd);
+            return;
+        }
 
         // Check The Password Length
         if (strlen(request_body.password) < 8)
         {
-            send(request->client_fd, HTTP_BAD_REQUEST_STATUS, strlen(HTTP_BAD_REQUEST_STATUS), 0);
+            const char *error_message = "<div class='text-red-500'>Password Is Too Short!</div>";
+            char response[1024];
+            snprintf(response, sizeof(response), HTTP_BAD_REQUEST_STATUS,
+                     strlen(error_message), error_message);
+            send(request->client_fd, response, strlen(response), 0);
             close(request->client_fd);
             return;
         }
@@ -56,7 +96,11 @@ void register_router(struct Request *request)
         // Compare Password and Confirm Password
         if (strcmp(request_body.password, request_body.confirm_password) != 0)
         {
-            send(request->client_fd, HTTP_BAD_REQUEST_STATUS, strlen(HTTP_BAD_REQUEST_STATUS), 0);
+            const char *error_message = "<div class='text-red-500'>Password Are Not The Same!</div>";
+            char response[1024];
+            snprintf(response, sizeof(response), HTTP_BAD_REQUEST_STATUS,
+                     strlen(error_message), error_message);
+            send(request->client_fd, response, strlen(response), 0);
             close(request->client_fd);
             return;
         }
@@ -68,9 +112,10 @@ void register_router(struct Request *request)
         prepare_statement(select_sql, &stmt);
         sqlite3_bind_text16(stmt, 1, request_body.email, -1, SQLITE_STATIC);
 
-        RequestBody query;
+        RequestBody query; // This struct seems to be used incorrectly here, as you only need to check for existence.
+                           // Consider just checking the return code of select_one_from_database directly.
 
-        int rc = select_one_from_database(stmt, &query, request_body_fields, field_count);
+        int rc = select_one_from_database(stmt, &query, register_request_body_fields, register_field_count);
 
         if (rc == SQLITE_NOTFOUND)
         {
@@ -91,14 +136,40 @@ void register_router(struct Request *request)
 
             if (insert_rc == 0)
             {
-                send(request->client_fd, HTTP_CREATED_STATUS, strlen(HTTP_CREATED_STATUS), 0);
+                // *** HTMX Redirect Implementation ***
+                const char *redirect_path = "/login"; // The URL of your login page
+                char response_header[256];
+                snprintf(response_header, sizeof(response_header),
+                         "HTTP/1.1 200 OK\r\n"
+                         "HX-Redirect: %s\r\n"   // Send the HX-Redirect header
+                         "Content-Length: 0\r\n" // No content in the body
+                         "\r\n",
+                         redirect_path);
+
+                send(request->client_fd, response_header, strlen(response_header), 0);
+                close(request->client_fd);
+                return;
+            }
+            else
+            {
+                // Handle database insertion error
+                const char *error_message = "<div class='text-red-500'>Database Error: Failed to register user!</div>";
+                char response[1024];
+                snprintf(response, sizeof(response), HTTP_INTERNAL_SERVER_ERROR_STATUS,
+                         strlen(error_message), error_message);
+                send(request->client_fd, response, strlen(response), 0);
                 close(request->client_fd);
                 return;
             }
         }
         else
         {
-            send(request->client_fd, HTTP_BAD_REQUEST_STATUS, strlen(HTTP_BAD_REQUEST_STATUS), 0);
+            // Email already exists
+            const char *error_message = "<div class='text-red-500'>Email already registered!</div>";
+            char response[1024];
+            snprintf(response, sizeof(response), HTTP_BAD_REQUEST_STATUS,
+                     strlen(error_message), error_message);
+            send(request->client_fd, response, strlen(response), 0);
             close(request->client_fd);
             return;
         }

@@ -1,163 +1,66 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fakebook - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Include HTMX library -->
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <script>
+      // Simple check to confirm HTMX is loaded
+      document.addEventListener("DOMContentLoaded", (event) => {
+        if (typeof htmx === "undefined") {
+          console.error("HTMX library is not loaded!");
+        } else {
+          console.log("HTMX library loaded successfully!");
+        }
+      });
+    </script>
   </head>
-  <body>
-    <nav>
-      <h1>Fakebook</h1>
-      <input type="text" placeholder="Search Fakebook" />
-      <div>
-        <button class="btn-blue">Profile</button>
-        <button class="btn-red">Logout</button>
+  <body class="bg-gray-100 font-sans">
+    <nav class="bg-blue-600 text-white p-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold">Fakebook</h1>
+      <div class="flex gap-2">
+        <button
+          class="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded"
+          hx-delete="/login"
+          hx-trigger="click"
+          hx-target="body"
+          hx-swap="outerHTML"
+          hx-redirect="/login"
+        >
+          Logout
+        </button>
       </div>
     </nav>
-    <div class="container">
-      <div class="card">
+
+    <div class="max-w-md mx-auto mt-5 flex flex-col items-center">
+      <div class="bg-white p-4 rounded-lg shadow w-full mb-4">
         <textarea
-          class="post-textarea"
+          class="w-full p-2 border border-gray-300 rounded-md"
           placeholder="What's on your mind?"
         ></textarea>
-        <button class="post-button">Post</button>
+        <button
+          class="w-full mt-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        >
+          Post
+        </button>
       </div>
-      <div class="card">
-        <div class="profile">
-          <div class="avatar"></div>
-          <span class="username">John Doe</span>
+
+      <div class="bg-white p-4 rounded-lg shadow w-full mb-4">
+        <div class="flex items-center mb-3">
+          <span class="ml-3 font-bold">John Doe</span>
         </div>
         <p>Just had an amazing day! 🌞</p>
-        <div class="post-actions">
-          <button>Like</button>
-          <button>Comment</button>
-          <button>Share</button>
-        </div>
       </div>
-      <div class="card">
-        <div class="profile">
-          <div class="avatar"></div>
-          <span class="username">Jane Smith</span>
+
+      <div class="bg-white p-4 rounded-lg shadow w-full mb-4">
+        <div class="flex items-center mb-3">
+          <span class="ml-3 font-bold">Jane Smith</span>
         </div>
         <p>Enjoying my vacation! ✈️🌴</p>
-        <div class="post-actions">
-          <button>Like</button>
-          <button>Comment</button>
-          <button>Share</button>
-        </div>
       </div>
     </div>
   </body>
-
-  <style>
-    /* styles.css */
-    body {
-      background-color: #f3f4f6;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    nav {
-      background-color: #2563eb;
-      color: white;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    nav h1 {
-      font-size: 24px;
-      font-weight: bold;
-    }
-    nav input {
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-    }
-    nav div button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      cursor: pointer;
-    }
-    .btn-blue {
-      background-color: #3b82f6;
-    }
-    .btn-blue:hover {
-      background-color: #1e40af;
-    }
-    .btn-red {
-      background-color: #ef4444;
-    }
-    .btn-red:hover {
-      background-color: #991b1b;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 20px auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .card {
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      margin-bottom: 15px;
-    }
-    .post-textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .post-button {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .post-button:hover {
-      background-color: #1e40af;
-    }
-
-    .profile {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .avatar {
-      width: 40px;
-      height: 40px;
-      background-color: #d1d5db;
-      border-radius: 50%;
-    }
-    .username {
-      font-weight: bold;
-      margin-left: 10px;
-    }
-    .post-actions {
-      margin-top: 10px;
-      display: flex;
-      justify-content: space-between;
-    }
-    .post-actions button {
-      background: none;
-      border: none;
-      color: #2563eb;
-      cursor: pointer;
-    }
-    .post-actions button:hover {
-      text-decoration: underline;
-    }
-  </style>
 </html>
