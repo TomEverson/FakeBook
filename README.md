@@ -1,3 +1,3 @@
 # FakeBook
 
-Facebook Clone Written In C++
+Facebook Clone Written In C
