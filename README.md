@@ -4,6 +4,8 @@ FakeBook is a Facebook clone written in C and HTMX. It's built from scratch with
 
 ---
 
+![Fakebook Logo](/fakebook.png)
+
 ## Features ✨
 
 - **Concurreny**: Handle Multiple Web Request Using Posix Thread
