@@ -1,3 +1,4 @@
 .vscode
 server
 fakebook.db
+.DS_Store
